@@ -13,32 +13,32 @@
 #include <vector>
 #include <memory>
 
-#include "Declarations.h"
-
 #include "IEnumerable.h"
 
 using std::vector;
 using std::exception;
 using std::shared_ptr;
 
-class BaseDecorator: public IEnumerable
+template <class T, class container = vector<T> >
+class BaseDecorator: public IEnumerable<T, container>
 {
 public:
     BaseDecorator(){}
-    BaseDecorator(int_iter beg, int_iter end): m_cur(beg), m_end(end) {}
+    BaseDecorator(typename IEnumerable<T, container>::obj_iter beg,
+                  typename IEnumerable<T, container>::obj_iter end): m_cur(beg), m_end(end) {}
     
-    virtual int next()
+    virtual T next()
     {
         if (m_cur == m_end)
             throw exception();
-        int value = *m_cur;
+        T value = *m_cur;
         ++m_cur;
         return value;
     }
     
 private:
-    int_iter m_cur;
-    int_iter m_end;
+    typename IEnumerable<T, container>::obj_iter m_cur;
+    typename IEnumerable<T, container>::obj_iter m_end;
 };
 
 #endif /* defined(__sem15_2__BaseDecorator__) */

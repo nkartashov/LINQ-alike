@@ -9,23 +9,24 @@
 #ifndef sem15_2_SelectDecorator_h
 #define sem15_2_SelectDecorator_h
 
-#include "Declarations.h"
 #include "BaseDecorator.h"
 
-class SelectDecorator: public IEnumerable
+template <class T, class container = vector<T> >
+class SelectDecorator: public IEnumerable<T, container>
 {
 public:
     
-    SelectDecorator(enum_ptr base, select_function func): m_base(base), m_func(func) {}
+    SelectDecorator(typename IEnumerable<T, container>::enum_ptr base,
+                    typename IEnumerable<T, container>::select_function func): m_base(base), m_func(func) {}
     
-    virtual int next()
+    virtual T next()
     {
         return m_func(m_base->next());
     }
     
 private:
-    enum_ptr m_base;
-    select_function m_func;
+    typename IEnumerable<T, container>::enum_ptr m_base;
+    typename IEnumerable<T, container>::select_function m_func;
 };
 
 #endif

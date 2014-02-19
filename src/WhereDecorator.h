@@ -9,28 +9,29 @@
 #ifndef __sem15_2__SelectDecorator__
 #define __sem15_2__SelectDecorator__
 
-#include "Declarations.h"
 #include "BaseDecorator.h"
 
-class WhereDecorator: public IEnumerable
+template <class T, class container = vector<T> >
+class WhereDecorator: public IEnumerable<T, container>
 {
 public:
     
-    WhereDecorator(enum_ptr base, where_predicate pred): m_base(base), m_pred(pred) {}
+    WhereDecorator(typename IEnumerable<T, container>::enum_ptr base,
+                   typename IEnumerable<T, container>::where_predicate pred): m_base(base), m_pred(pred) {}
     
-    virtual int next()
+    virtual T next()
     {
         while (true)
         {
-            int value = m_base->next();
+            T value = m_base->next();
             if (m_pred(value))
                 return value;
         }
     }
     
 private:
-    enum_ptr m_base;
-    where_predicate m_pred;
+    typename IEnumerable<T, container>::enum_ptr m_base;
+    typename IEnumerable<T, container>::where_predicate m_pred;
 };
 
 #endif /* defined(__sem15_2__SelectDecorator__) */

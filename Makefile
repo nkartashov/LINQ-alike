@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -Wall -O2 -ggdb
+CFLAGS = -Wall -O2 -ggdb -std=c++11
 
 BINDIR = bin
 SOURCEDIR = src
@@ -8,7 +8,7 @@ OBJDIR = $(BINDIR)/obj
 SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCEDIR)/%, $(OBJDIR)/%, $(patsubst %.cpp, %.o, $(SOURCES)))
 
-TARGET = $(BINDIR)/linq_test
+TARGET = link-alike
 
 $(TARGET): init $(OBJECTS)
 	@echo -n 'Linking $@ ...'
@@ -26,4 +26,4 @@ init:
 	@mkdir -p $(OBJDIR)
 
 clean:
-	@rm -rf $(BINDIR) 	
+	@rm -rf $(BINDIR) $(TARGET)	

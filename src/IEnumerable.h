@@ -9,14 +9,25 @@
 #ifndef __sem15_2__IEnumerable__
 #define __sem15_2__IEnumerable__
 
-#include "Declarations.h"
+#include <vector>
+#include <functional>
+#include <memory>
 
-enum_ptr Do(vector<int> const & v);
+using std::enable_shared_from_this;
+using std::function;
+using std::shared_ptr;
 
-class IEnumerable: public std::enable_shared_from_this<IEnumerable>
+
+template <class T, class container>
+class IEnumerable: public enable_shared_from_this<IEnumerable<T, container> >
 {
 public:
-    virtual int next() = 0;
+    typedef typename container::const_iterator obj_iter;
+    typedef function<T(T)> select_function;
+    typedef function<bool(T)> where_predicate;
+    typedef shared_ptr<IEnumerable<T, container> > enum_ptr;
+    
+    virtual T next() = 0;
     enum_ptr where(where_predicate pred);
     enum_ptr select(select_function func);
     int count();
@@ -24,5 +35,9 @@ public:
     virtual ~IEnumerable() {}
 };
 
+template <class T, class container>
+typename IEnumerable<T, container>::enum_ptr Do(container const & v);
+
+#include "IEnumerable-impl.h"
 
 #endif /* defined(__sem15_2__IEnumerable__) */

@@ -9,14 +9,13 @@
 #ifndef sem15_2_CountDecorator_h
 #define sem15_2_CountDecorator_h
 
-#include "Declarations.h"
 #include "BaseDecorator.h"
 
-class CountDecorator: public IEnumerable
+template <class T, class container>
+class CountDecorator: public IEnumerable<T, container>
 {
 public:
-    
-    CountDecorator(enum_ptr base): m_base(base), m_result(0)
+    CountDecorator(typename IEnumerable<T, container>::enum_ptr base): m_base(base), m_result(0)
     {
         try
         {
@@ -35,7 +34,7 @@ public:
     }
     
 private:
-    enum_ptr m_base;
+    typename IEnumerable<T, container>::enum_ptr m_base;
     int m_result;
 };
 
